@@ -1,0 +1,2 @@
+# duckb
+Playing with Duckdb
