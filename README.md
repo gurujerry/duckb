@@ -47,10 +47,10 @@ time echo "SET preserve_insertion_order=false;
                             ROW_GROUP_SIZE 130099920,
                             PER_THREAD_OUTPUT TRUE);"
 
-./duckdb -c "PRAGMA temp_directory='/tmp/'; SELECT count(*) FROM 'index.json'"
-# Fails, no --set
-./duckdb --set memory_limit=4GB --set temp_directory=./tmp/ --set threads=4 -C "SELECT count(*) FROM 'index.json'"
+#./duckdb -c "PRAGMA temp_directory='/tmp/'; SELECT count(*) FROM 'index.json'"
+# Try entering duckdb CLI and running oommands
 ./duckdb
+SET preserve_insertion_order=false;
 SET memory_limit='4GB';
 #SET memory_limit='200MB';
 SET temp_directory='./tmp/';
@@ -69,3 +69,10 @@ pip install pandas pyarrow ijson
 
 Try to Read and process the JSON file in chunks using ijson and Convert each chunk to a DataFrame and append it to a Parquet file in file [ijson_to_parquet.py](./ijson_to_parquet.py).
 
+Just to see what removing preceding whitespace would make the json size look like, we can run:
+[](./remove_whitespace.py)
+```bash
+python remove_whitespace.py
+ls -al compressed_output.json
+# 4.1G 326807926
+```
