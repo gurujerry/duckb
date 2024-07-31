@@ -4,6 +4,8 @@ Playing with Duckdb
 ```bash
 # Grab a big json file
 wget https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/index.json
+# Try CSVs, easier to chunk and clean (5,833,733 lines 4.1G)
+wget https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonEC2/current/index.csv
 # how big is it?
 ls -alh index.json
 #5.6G or 6,003,967,653
@@ -64,7 +66,7 @@ rm -rf *.pq
 At this point, it's being a real PITA to try and use duckdb so let's see if we can use python to convert the `index.json` to parquet format at check the size difference.
 Start by installing some libraries
 ```bash
-pip install pandas pyarrow ijson
+pip install pandas pyarrow ijson polars
 ```
 
 Try to Read and process the JSON file in chunks using ijson and Convert each chunk to a DataFrame and append it to a Parquet file in file [ijson_to_parquet.py](./ijson_to_parquet.py).
@@ -76,3 +78,5 @@ python remove_whitespace.py
 ls -al compressed_output.json
 # 4.1G 326807926
 ```
+
+From index.json only region we want to query is `"location" : "US East (N. Virginia)"`, we could possibly delete all regions not matching
